@@ -1,1 +1,59 @@
+name: CI/CD Pipeline
 
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.11]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        cd services/upload-service
+        pip install -r requirements.txt
+    
+    - name: Run linting
+      run: |
+        cd services/upload-service
+        pip install flake8
+        flake8 app/ --max-line-length=120
+    
+    - name: Run tests
+      run: |
+        cd services/upload-service
+        python -m pytest tests/ -v
+
+  terraform-validate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.5.0
+    
+    - name: Terraform Format
+      run: |
+        cd infrastructure
+        terraform fmt -check
+    
+    - name: Terraform Validate
+      run: |
+        cd infrastructure
+        terraform init
+        terraform validate
