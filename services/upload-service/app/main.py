@@ -11,8 +11,7 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # Initialize clients
-try:
-    credentials, project_id = default()
+try;
     firestore_client = firestore.Client(project=project_id)
     publisher = pubsub_v1.PublisherClient()
     topic_path = publisher.topic_path(project_id, 'chunk-processing-topic')
