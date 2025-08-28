@@ -2,7 +2,6 @@ import logging
 import hashlib
 from flask import Flask, request, jsonify
 from google.cloud import firestore, pubsub_v1
-from google.auth import default
 from .chunker import ContentDefinedChunker
 
 # Set up logging
