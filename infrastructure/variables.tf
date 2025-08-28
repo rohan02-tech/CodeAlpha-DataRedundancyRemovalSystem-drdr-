@@ -24,7 +24,7 @@ variable "spanner_nodes" {
 variable "force_destroy" {
   description = "Force destroy bucket with contents"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "environment" {
