@@ -83,7 +83,7 @@ resource "google_spanner_database" "chunk_index" {
         Size INT64 NOT NULL,
         ContainerObject STRING(256) NOT NULL,
         CompressionType STRING(16) NOT NULL DEFAULT 'NONE',
-        EncryptionKey STRING(128),
+        EncryptionKey STRING(128)
     ) PRIMARY KEY (ChunkId);
     EOF
   ]
